@@ -1,6 +1,10 @@
-import { useState, useEffect } from "react"
+import React, { useContext, useState, useEffect } from "react"
+import Header from "./Header.tsx"
+import appContext from './context.ts'
+
 const Content = () => {
     const [apiInfo, setInfoApi] = useState([])
+    
 
     const someAPI = async () => {
         const response = await fetch('https://pokeapi.co/api/v2/', {
@@ -9,21 +13,24 @@ const Content = () => {
 
         const data = await response.json()
         setInfoApi(data)
-        console.log('Call API')
     }
 
     useEffect(()=>{
         someAPI()
     }, [])
-    
+
+    const myContext = useContext(appContext)
+
     return (
         <div className="content">
-            <p>Import/Export</p>
+            <Header/>
+            {myContext}
             {Object.entries(apiInfo).map(([key, val])=>{
                 return (<p>{key} : {val}</p>)
             })}
         </div>
     )
 }
+
 
 export default Content
